@@ -23,9 +23,14 @@ def get_clob_client():
     chain_id = POLYGON
     
     if key is None:
-        print("Environment variable 'PK' cannot be found")
-        return None
-
+        print("Environment variable 'PK' cannot be found. Initializing in READ-ONLY mode.")
+        try:
+            client = ClobClient(host, key=None, chain_id=chain_id)
+            return client
+        except Exception as ex: 
+            print("Error creating read-only clob client")
+            print(ex)
+            return None
 
     try:
         client = ClobClient(host, key=key, chain_id=chain_id)
