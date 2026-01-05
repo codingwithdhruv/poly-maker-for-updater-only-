@@ -17,7 +17,11 @@ def get_sel_df(spreadsheet, sheet_name='Selected Markets'):
         sel_df = sel_df[sel_df['question'] != ""].reset_index(drop=True)
         return sel_df
     except:
-        return pd.DataFrame()
+        return pd.DataFrame(columns=['question'])
+
+    if 'question' not in sel_df.columns:
+        return pd.DataFrame(columns=['question'])
+    return sel_df
     
 def get_all_markets(client):
     cursor = ""
