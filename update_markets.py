@@ -117,9 +117,16 @@ def fetch_and_process_data():
     print(f'{pd.to_datetime("now")}: Fetched select market of length {len(new_df)}.')
 
     if len(new_df) > 50:
+        print("Updating 'All Markets' sheet...")
         update_sheet(new_df, wk_all)
+        
+        print("Updating 'Volatility Markets' sheet...")
         update_sheet(volatility_df, wk_vol)
+        
+        print("Updating 'Full Markets' sheet...")
         update_sheet(m_data, wk_full)
+        
+        print("Done updating all sheets!")
     else:
         print(f'{pd.to_datetime("now")}: Not updating sheet because of length {len(new_df)}.')
 
