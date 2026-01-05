@@ -152,6 +152,10 @@ def update_markets():
         global_state.df, global_state.params = received_df.copy(), received_params
     
 
+    if global_state.df.empty:
+        print("Warning: global_state.df is empty. No markets loaded.")
+        return
+
     for _, row in global_state.df.iterrows():
         for col in ['token1', 'token2']:
             row[col] = str(row[col])

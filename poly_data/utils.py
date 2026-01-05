@@ -31,11 +31,26 @@ def get_sheet_df(read_only=None):
 
     wk = spreadsheet.worksheet(sel)
     df = pd.DataFrame(wk.get_all_records())
-    df = df[df['question'] != ""].reset_index(drop=True)
+    if 'question' not in df.columns:
+        df = pd.DataFrame(columns=['question'])
+    else:
+        df = df[df['question'] != ""].reset_index(drop=True)
 
     wk2 = spreadsheet.worksheet(all)
     df2 = pd.DataFrame(wk2.get_all_records())
     df2 = df2[df2['question'] != ""].reset_index(drop=True)
+
+    # Identifiy and warn about missing markets
+    missing_markets = df[~df['question'].isin(df2['question'])]
+    if not missing_markets.empty:
+        print("\n" + "="*50)
+        print("⚠️  WARNING: MARKETS NOT FOUND")
+        print("The following markets are in 'Selected Markets' but NOT in 'All Markets':")
+        for q in missing_markets['question']:
+            print(f"   ❌ {q}")
+        print("aggregation: These will be SKIPPED.")
+        print("SOLUTION: Run 'update_markets.py' to refresh data, or copy exact names from 'All Markets'.")
+        print("="*50 + "\n")
 
     result = df.merge(df2, on='question', how='inner')
 

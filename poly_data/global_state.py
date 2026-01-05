@@ -13,7 +13,7 @@ REVERSE_TOKENS = {}
 all_data = {}  
 
 # Market configuration data from Google Sheets
-df = None  
+df = pd.DataFrame()  
 
 # ============ Client & Parameters ============
 
